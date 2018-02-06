@@ -1,6 +1,6 @@
 # Flickr Feed example app
 
-![FlickrFeed screenshot](https://github.com/armadilov/flickrfeed/docs/images/flickfeed.png "Sample screen")
+![FlickrFeed screenshot](https://raw.githubusercontent.com/armadilov/flickrfeed/master/docs/images/flickrfeed.png "Sample screen")
 
 **Description**
 The app downloads and displays public photo feed from Flickr using their feed API. 
