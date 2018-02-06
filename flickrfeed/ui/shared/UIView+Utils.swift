@@ -8,6 +8,22 @@
 
 import UIKit
 
+extension UIView {
+    func firstSuperview<T>(ofType type: T.Type) -> T? {
+        var currentView: UIView? = self
+        
+        while currentView != nil {
+            if currentView is T {
+                break
+            } else {
+                currentView = currentView?.superview
+            }
+        }
+        
+        return currentView as? T
+    }
+}
+
 protocol NibInstantiable : class {
     static func nib() -> UINib
     static func instanceFromNib() -> Self

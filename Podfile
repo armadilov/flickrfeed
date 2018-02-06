@@ -8,6 +8,9 @@ target 'flickrfeed' do
     pod 'Alamofire', '~> 4.5'
     pod 'SwiftMessages'
     pod 'NVActivityIndicatorView', '~> 4.1'
+    pod 'SwiftyImageCache', '~> 1.2.2'
+    pod 'RxSwift',    '~> 4.0'
+    pod 'RxCocoa',    '~> 4.0'
     
     target 'flickrfeedTests' do
         inherit! :search_paths
