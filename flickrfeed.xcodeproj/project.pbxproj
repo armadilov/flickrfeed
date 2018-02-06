@@ -182,10 +182,8 @@
 			isa = PBXGroup;
 			children = (
 				5BFAA4FA2029E2D2004ACC4C /* app */,
-				5BFAA4F92029E2C5004ACC4C /* resources */,
 				5BFAA4F82029E2BC004ACC4C /* ui */,
 				5BFAA4F12029DA98004ACC4C /* utils */,
-				5B830BD520227374006DFF2D /* model */,
 				5B830BD420227186006DFF2D /* network */,
 			);
 			path = flickrfeed;
@@ -218,13 +216,6 @@
 				5BFAA4EA2029D07D004ACC4C /* RestJSONDecoder.swift */,
 			);
 			path = network;
-			sourceTree = "<group>";
-		};
-		5B830BD520227374006DFF2D /* model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = model;
 			sourceTree = "<group>";
 		};
 		5B830BDA2022752E006DFF2D /* flickr */ = {
@@ -273,13 +264,6 @@
 				5B7F0661202264E1009F2218 /* Main.storyboard */,
 			);
 			path = ui;
-			sourceTree = "<group>";
-		};
-		5BFAA4F92029E2C5004ACC4C /* resources */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = resources;
 			sourceTree = "<group>";
 		};
 		5BFAA4FA2029E2D2004ACC4C /* app */ = {
