@@ -21,13 +21,20 @@ class FlickrApiClientImpl: FlickrApiClient {
     
     func getPublicPhotos(completion: @escaping (Result<[Flickr.FeedItem], NetworkServiceError>) -> ()) {
         
-        Alamofire.request(getPhotosPublicUrl).responseJSON { response in
-            guard let _ = response.result.value else {
+        Alamofire.request(getPhotosPublicUrl).responseData { response in
+            guard let data = response.result.value else {
                 completion(Result.failure(NetworkServiceError.from(httpResponse: response.response, error: response.error)))
                 return
             }
             
-            completion(Result.failure(NetworkServiceError.serviceNotAvailable(500)))
+            do {
+                let decoder = RestJSONDecoder()
+                let photoFeed = try decoder.decode(Flickr.PhotoFeed.self, from: data)
+                completion(Result.success(photoFeed.items))
+            } catch {
+                print(error)
+                completion(Result.failure(NetworkServiceError.invalidResponse(error)))
+            }
         }
     }
 }

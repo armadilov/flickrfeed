@@ -12,6 +12,7 @@ enum NetworkServiceError: Error {
     case cancelled
     case networkNotAvailable
     case serviceNotAvailable(Int)
+    case invalidResponse(Error?)
     case unknown(Error?)
     
     static func from(httpResponse: HTTPURLResponse?, error: Error?) -> NetworkServiceError {
