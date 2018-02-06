@@ -18,9 +18,35 @@ class FlickrFeedViewController: UIViewController {
         super.viewDidLoad()
         
         viewModel = FlickrFeedViewModelImpl( delegate: self )
+        viewModel.load()
+    }
+    
+    fileprivate func showActivity() {
+        
+    }
+    
+    fileprivate func hideActivity() {
+        
     }
 }
 
 extension FlickrFeedViewController : FlickrFeedViewModelDelegate {
+    func viewModelDidBeginRequest() {
+        showActivity()
+    }
+    
+    func viewModelDidEndRequest() {
+        hideActivity()
+    }
+    
+    func viewModelDidEncounterError(errorMessage: String) {
+        showError(message: errorMessage)
+    }
+    
+    func viewModelDidLoadItems() {
+        self.tableView.reloadData()
+        showSuccess(message: "Items loaded")
+    }
+    
     
 }

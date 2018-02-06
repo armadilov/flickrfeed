@@ -35,7 +35,6 @@ class FlickrApiClientImpl: FlickrApiClient {
                 items.remove { String.isNilOrEmpty( $0.media?.link ) }
                 completion(Result.success(items))
             } catch {
-                print(error)
                 completion(Result.failure(NetworkServiceError.invalidResponse(error)))
             }
         }
