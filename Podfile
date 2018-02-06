@@ -7,6 +7,7 @@ target 'flickrfeed' do
     use_frameworks!
     pod 'Alamofire', '~> 4.5'
     pod 'SwiftMessages'
+    pod 'NVActivityIndicatorView', '~> 4.1'
     
     target 'flickrfeedTests' do
         inherit! :search_paths

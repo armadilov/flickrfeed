@@ -7,12 +7,14 @@
 //
 
 import UIKit
+import NVActivityIndicatorView
 
 class FlickrFeedViewController: UIViewController {
     fileprivate var viewModel: FlickrFeedViewModel!
     
     @IBOutlet fileprivate weak var searchBar: UISearchBar!
     @IBOutlet fileprivate weak var tableView: UITableView!
+    @IBOutlet fileprivate weak var activityView: NVActivityIndicatorView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,11 +24,16 @@ class FlickrFeedViewController: UIViewController {
     }
     
     fileprivate func showActivity() {
-        
+        activityView.startAnimating()
+        AnimateUtils.fadeIn(view: activityView)
     }
     
     fileprivate func hideActivity() {
-        
+        AnimateUtils.fadeOut(view: activityView) { [weak self] in
+            guard let self_ = self else { return }
+            
+            self_.activityView.stopAnimating()
+        }
     }
 }
 

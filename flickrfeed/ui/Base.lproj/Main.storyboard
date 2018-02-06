@@ -47,11 +47,29 @@
                                     <textInputTraits key="textInputTraits"/>
                                 </searchBar>
                             </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AQR-NV-SN0" customClass="NVActivityIndicatorView" customModule="NVActivityIndicatorView">
+                                <rect key="frame" x="137" y="283.5" width="100" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="K7m-D0-qwM"/>
+                                    <constraint firstAttribute="width" constant="100" id="mrJ-34-J84"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="typeName" value="lineScalePulseOut"/>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="color">
+                                        <color key="value" red="0.35115844011306763" green="0.4768596887588501" blue="0.70983403921127319" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="padding">
+                                        <real key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="WCl-Kn-eeO" firstAttribute="trailing" secondItem="MSs-7V-kEy" secondAttribute="trailing" id="8h6-oh-AlK"/>
                             <constraint firstItem="WCl-Kn-eeO" firstAttribute="leading" secondItem="MSs-7V-kEy" secondAttribute="leading" id="ETq-BP-qzA"/>
+                            <constraint firstItem="AQR-NV-SN0" firstAttribute="centerY" secondItem="vsf-hV-Jkh" secondAttribute="centerY" id="EfH-LL-rMD"/>
+                            <constraint firstItem="AQR-NV-SN0" firstAttribute="centerX" secondItem="vsf-hV-Jkh" secondAttribute="centerX" id="FLI-XO-pND"/>
                             <constraint firstItem="WCl-Kn-eeO" firstAttribute="top" secondItem="MSs-7V-kEy" secondAttribute="top" id="T95-nG-vEE"/>
                             <constraint firstItem="WCl-Kn-eeO" firstAttribute="bottom" secondItem="MSs-7V-kEy" secondAttribute="bottom" id="bWe-l4-7aU"/>
                         </constraints>
@@ -61,6 +79,7 @@
                         <barButtonItem key="backBarButtonItem" title=" " id="DlO-FS-Htb"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="activityView" destination="AQR-NV-SN0" id="qc0-oB-rtw"/>
                         <outlet property="searchBar" destination="1Sb-kR-cQG" id="s9t-Tc-ffn"/>
                         <outlet property="tableView" destination="WCl-Kn-eeO" id="pFy-Iw-owr"/>
                     </connections>
