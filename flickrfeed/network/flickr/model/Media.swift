@@ -10,6 +10,10 @@ import Foundation
 
 extension Flickr {
     struct Media : Codable {
-        var m: String?
+        var link: String?
+        
+        enum CodingKeys : String, CodingKey {
+            case link = "m"
+        }
     }
 }

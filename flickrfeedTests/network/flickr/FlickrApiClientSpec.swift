@@ -25,7 +25,19 @@ class FlickrApiClientTests: XCTestCase {
     }
     
     func test_loads_required_item_fields_when_feed_requested() {
-        XCTFail("Pending")
+        fixture.setupSuccessRequest()
+        
+        act() { result in
+            guard let items = try? result.getValue(), let firstItem = items.first else {
+                XCTAssert(false)
+                return
+            }
+            XCTAssertNotEmpty(firstItem.title)
+            XCTAssertNotEmpty(firstItem.link)
+            XCTAssertNotEmpty(firstItem.media?.link)
+            XCTAssertNotEmpty(firstItem.author)
+            XCTAssertNotNil(firstItem.published)
+        }
     }
     
     func test_ignores_items_without_valid_fields_when_feed_requested() {
