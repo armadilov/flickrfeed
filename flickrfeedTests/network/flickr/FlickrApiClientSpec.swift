@@ -56,7 +56,11 @@ class FlickrApiClientTests: XCTestCase {
     }
     
     func test_returns_network_error_when_network_down() {
-        XCTFail("Pending")
+        stubNetworkDown()
+        
+        act() { result in
+            XCTAssertThrows(error: NetworkServiceError.networkNotAvailable) { try _ = result.getValue() }
+        }
     }
     
     func test_returns_service_error_when_service_down() {

@@ -44,6 +44,13 @@ public func stubHttpInitAnyHostBadRequest( ) {
     }
 }
 
+public func stubNetworkDown( ) {
+    stub(condition: anyHost()) { response in
+        let notConnectedError = NSError(domain: NSURLErrorDomain, code: URLError.notConnectedToInternet.rawValue)
+        return OHHTTPStubsResponse(error:notConnectedError)
+    }
+}
+
 
 public func stubHttpTearDown( ) {
     OHHTTPStubs.removeAllStubs()
