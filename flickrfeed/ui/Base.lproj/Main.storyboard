@@ -46,6 +46,10 @@
                                     <color key="barTintColor" red="0.94999999999999996" green="0.94999999999999996" blue="0.96999999999999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                     <textInputTraits key="textInputTraits"/>
                                 </searchBar>
+                                <connections>
+                                    <outlet property="dataSource" destination="GaM-fp-pdo" id="fL1-ch-WcZ"/>
+                                    <outlet property="delegate" destination="GaM-fp-pdo" id="cbr-eT-y3K"/>
+                                </connections>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AQR-NV-SN0" customClass="NVActivityIndicatorView" customModule="NVActivityIndicatorView">
                                 <rect key="frame" x="137" y="283.5" width="100" height="100"/>
@@ -57,9 +61,6 @@
                                     <userDefinedRuntimeAttribute type="string" keyPath="typeName" value="lineScalePulseOut"/>
                                     <userDefinedRuntimeAttribute type="color" keyPath="color">
                                         <color key="value" red="0.35115844011306763" green="0.4768596887588501" blue="0.70983403921127319" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="padding">
-                                        <real key="value" value="10"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>

@@ -9,6 +9,10 @@
 import UIKit
 import NVActivityIndicatorView
 
+private enum CellIdentifier : String {
+    case feedItem = "feedItemCell"
+}
+
 class FlickrFeedViewController: UIViewController {
     fileprivate var viewModel: FlickrFeedViewModel!
     
@@ -21,6 +25,13 @@ class FlickrFeedViewController: UIViewController {
         
         viewModel = FlickrFeedViewModelImpl( delegate: self )
         viewModel.load()
+        
+        registerCells()
+    }
+    
+    fileprivate func registerCells() {
+        let cellNib = FlickrFeedItemTableViewCell.nib()
+        tableView.register(cellNib, forCellReuseIdentifier: CellIdentifier.feedItem.rawValue)
     }
     
     fileprivate func showActivity() {
@@ -34,6 +45,29 @@ class FlickrFeedViewController: UIViewController {
             
             self_.activityView.stopAnimating()
         }
+    }
+}
+
+extension FlickrFeedViewController : UITableViewDelegate {
+}
+
+extension FlickrFeedViewController : UITableViewDataSource {
+    public func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return viewModel.items.count
+    }
+    
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifier.feedItem.rawValue, for: indexPath) as? FlickrFeedItemTableViewCell else {
+            return UITableViewCell()
+        }
+        
+        let _ = viewModel.items[0]
+        
+        return cell
     }
 }
 
@@ -52,7 +86,6 @@ extension FlickrFeedViewController : FlickrFeedViewModelDelegate {
     
     func viewModelDidLoadItems() {
         self.tableView.reloadData()
-        showSuccess(message: "Items loaded")
     }
     
     
