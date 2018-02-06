@@ -15,12 +15,7 @@ private enum CellIdentifier : String {
 }
 
 class FlickrFeedViewController: UIViewController {
-    fileprivate let imageLoadedEventSubject = PublishSubject<Bool>()
-    fileprivate let disposeBag = DisposeBag()
     fileprivate var viewModel: FlickrFeedViewModel!
-    fileprivate var reloadIndexes: [IndexPath] = []
-    fileprivate var pendingReload: Bool = false
-    fileprivate var isScrolling: Bool = false
     
     @IBOutlet fileprivate weak var searchBar: UISearchBar!
     @IBOutlet fileprivate weak var tableView: UITableView!
@@ -31,21 +26,6 @@ class FlickrFeedViewController: UIViewController {
         
         viewModel = FlickrFeedViewModelImpl( delegate: self )
         viewModel.load()
-        
-        imageLoadedEventSubject
-            .debounce(0.05, scheduler: MainScheduler.instance)
-            .subscribe( { [weak self] _ in
-                guard let self_ = self else { return }
-                
-                if (self_.isScrolling) {
-                    self_.pendingReload = true
-                    return
-                }
-                
-                self_.tableView.beginUpdates()
-                self_.tableView.endUpdates()
-            })
-            .disposed(by: disposeBag)
         
         registerCells()
     }
@@ -86,37 +66,9 @@ extension FlickrFeedViewController : UITableViewDataSource {
             return UITableViewCell()
         }
         
-        cell.delegate = self
         cell.dataContext = viewModel.items[indexPath.row]
         
         return cell
-    }
-    
-    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if (!scrollView.isDragging) {
-            isScrolling = false
-        } else {
-            isScrolling = true
-        }
-    }
-    
-    public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        if (pendingReload) {
-            isScrolling = false
-            self.tableView.beginUpdates()
-            self.tableView.endUpdates()
-        }
-    }
-}
-
-extension FlickrFeedViewController : FlickrFeedItemTableViewCellDelegate {
-    func requestReload(cell: FlickrFeedItemTableViewCell) {
-        guard let indexPath = tableView.indexPath(for: cell) else {
-            return
-        }
-        
-        reloadIndexes.append(indexPath)
-        imageLoadedEventSubject.onNext(true)
     }
 }
 
