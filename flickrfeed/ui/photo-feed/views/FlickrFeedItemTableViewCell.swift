@@ -12,13 +12,15 @@ import SwiftyImageCache
 final class FlickrFeedItemTableViewCell: UITableViewCell, NibInstantiable {
     @IBOutlet fileprivate weak var authorLabel: UILabel!
     @IBOutlet fileprivate weak var titleLabel: UILabel!
+    @IBOutlet fileprivate weak var tagsLabel: UILabel!
     @IBOutlet fileprivate weak var photoImageView: UIImageView!
     
     var dataContext : Flickr.FeedItem? { didSet { updateView() } }
     
     fileprivate func updateView() {
-        authorLabel.text = dataContext?.author ?? "-"
         titleLabel.text = dataContext?.title ?? ""
+        authorLabel.text = String.nonEmpty(dataContext?.author, emptyText: "-")
+        tagsLabel.text = String.nonEmpty(dataContext?.tags, emptyText: "-")
         photoImageView.image = nil
         
         let urlText = dataContext?.media?.link ?? ""

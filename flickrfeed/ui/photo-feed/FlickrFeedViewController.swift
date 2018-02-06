@@ -9,6 +9,7 @@
 import UIKit
 import NVActivityIndicatorView
 import RxSwift
+import RxCocoa
 
 private enum CellIdentifier : String {
     case feedItem = "feedItemCell"
@@ -16,10 +17,14 @@ private enum CellIdentifier : String {
 
 class FlickrFeedViewController: UIViewController {
     fileprivate var viewModel: FlickrFeedViewModel!
+    fileprivate var disposeBag: DisposeBag = DisposeBag()
+    fileprivate var dataLoadFromPullToRefresh = false
     
     @IBOutlet fileprivate weak var searchBar: UISearchBar!
     @IBOutlet fileprivate weak var tableView: UITableView!
-    @IBOutlet fileprivate weak var activityView: NVActivityIndicatorView!
+    @IBOutlet fileprivate weak var activityOverlayView: UIView!
+    @IBOutlet fileprivate weak var activityIndicatorView: NVActivityIndicatorView!
+    fileprivate var refreshControl: UIRefreshControl!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,7 +32,17 @@ class FlickrFeedViewController: UIViewController {
         viewModel = FlickrFeedViewModelImpl( delegate: self )
         viewModel.load()
         
+        setupPullToRefresh()
         registerCells()
+        setupSearchBar()
+    }
+    
+    fileprivate func setupPullToRefresh() {
+        refreshControl = UIRefreshControl()
+        refreshControl.tintColor = UIColor(red: 0.2, green: 0.4, blue: 0.69, alpha: 1.0)
+        refreshControl.addTarget(self, action: #selector(refreshData(_:)), for: UIControlEvents.valueChanged)
+        
+        tableView.refreshControl = refreshControl
     }
     
     fileprivate func registerCells() {
@@ -35,16 +50,38 @@ class FlickrFeedViewController: UIViewController {
         tableView.register(cellNib, forCellReuseIdentifier: CellIdentifier.feedItem.rawValue)
     }
     
+    @objc func refreshData(_ sender: AnyObject) {
+        dataLoadFromPullToRefresh = true
+        viewModel.load()
+    }
+    
+    fileprivate func setupSearchBar() {
+        searchBar.rx.text.orEmpty
+            .debounce(0.35, scheduler: MainScheduler.instance)
+            .distinctUntilChanged( { $0 == $1 })
+            .observeOn(MainScheduler.instance)
+            .subscribe({ [weak self] in
+                guard let self_ = self else { return }
+                self_.viewModel.tags = $0.element ?? ""
+            }).disposed(by: disposeBag)
+    }
+    
     fileprivate func showActivity() {
-        activityView.startAnimating()
-        AnimateUtils.fadeIn(view: activityView)
+        if dataLoadFromPullToRefresh {
+            return
+        }
+        
+        activityIndicatorView.startAnimating()
+        AnimateUtils.fadeIn(view: activityOverlayView)
     }
     
     fileprivate func hideActivity() {
-        AnimateUtils.fadeOut(view: activityView) { [weak self] in
+        dataLoadFromPullToRefresh = false
+        self.refreshControl?.endRefreshing()
+        AnimateUtils.fadeOut(view: activityOverlayView) { [weak self] in
             guard let self_ = self else { return }
             
-            self_.activityView.stopAnimating()
+            self_.activityIndicatorView.stopAnimating()
         }
     }
 }

@@ -20,6 +20,7 @@ protocol FlickrFeedViewModelDelegate : class {
 
 protocol FlickrFeedViewModel {
     var items: [Flickr.FeedItem] { get }
+    var tags: String { get set }
     
     func load()
 }
@@ -31,6 +32,7 @@ class FlickrFeedViewModelImpl : FlickrFeedViewModel {
     fileprivate weak var delegate: FlickrFeedViewModelDelegate!
     
     fileprivate (set) var items: [Flickr.FeedItem] = []
+    var tags: String = "" { didSet { load() }}
     
     init( delegate: FlickrFeedViewModelDelegate,
           flickrApiClient: FlickrApiClient = FlickrApiClientImpl(),
@@ -43,7 +45,7 @@ class FlickrFeedViewModelImpl : FlickrFeedViewModel {
     func load() {
         delegate.viewModelDidBeginRequest()
         
-        self.flickrApiClient.getPublicPhotos { [weak self] result in
+        self.flickrApiClient.getPublicPhotos(tags: tagParams()) { [weak self] result in
             guard let self_ = self else { return }
             
             self_.delegate.viewModelDidEndRequest()
@@ -55,6 +57,10 @@ class FlickrFeedViewModelImpl : FlickrFeedViewModel {
                 self_.handle(error: error)
             }
         }
+    }
+    
+    fileprivate func tagParams() -> [String] {
+        return tags.split(separator: ",").map { $0.trimmingCharacters(in: .whitespacesAndNewlines)}
     }
     
     fileprivate func handle(error: Error) {

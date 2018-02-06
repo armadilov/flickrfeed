@@ -24,6 +24,19 @@ class FlickrApiClientTests: XCTestCase {
         }
     }
     
+    func test_loads_tagged_items_when_feed_filtering_by_tags() {
+        fixture.setupTagRequest()
+        
+        act() { result in
+            guard let items = try? result.getValue() else {
+                XCTAssert(false)
+                return
+            }
+            
+            XCTAssert(items.count > 0)
+        }
+    }
+    
     func test_loads_required_item_fields_when_feed_requested() {
         fixture.setupSuccessRequest()
         
@@ -82,7 +95,7 @@ class FlickrApiClientTests: XCTestCase {
     fileprivate func act(completion: @escaping (Result<[Flickr.FeedItem], NetworkServiceError>) -> ()) {
         let expectation = XCTestExpectation(description: "request completes")
         
-        fixture.client.getPublicPhotos() { result in
+        fixture.client.getPublicPhotos(tags: fixture.tags) { result in
             completion(result)
             expectation.fulfill()
         }

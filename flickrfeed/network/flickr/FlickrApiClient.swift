@@ -13,15 +13,20 @@ import Alamofire
 enum Flickr {}
 
 protocol FlickrApiClient {
-    func getPublicPhotos(completion: @escaping (Result<[Flickr.FeedItem], NetworkServiceError>) -> ())
+    func getPublicPhotos(tags: [String], completion: @escaping (Result<[Flickr.FeedItem], NetworkServiceError>) -> ())
 }
 
 class FlickrApiClientImpl: FlickrApiClient {
     fileprivate let getPhotosPublicUrl = "https://api.flickr.com/services/feeds/photos_public.gne?format=json&nojsoncallback=1"
     
-    func getPublicPhotos(completion: @escaping (Result<[Flickr.FeedItem], NetworkServiceError>) -> ()) {
+    func getPublicPhotos(tags: [String] = [], completion: @escaping (Result<[Flickr.FeedItem], NetworkServiceError>) -> ()) {
         
-        Alamofire.request(getPhotosPublicUrl).responseData { response in
+        var url = getPhotosPublicUrl
+        if (tags.count > 0) {
+            let tagParams = tags.map { $0.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? "" }
+            url = url + "&tags=" + tagParams.joined(separator:",")
+        }
+        Alamofire.request(url).responseData { response in
             guard let httpStatus = response.response?.statusCode, httpStatus == 200, let data = response.result.value else {
                 completion(Result.failure(NetworkServiceError.from(httpResponse: response.response, error: response.error)))
                 return

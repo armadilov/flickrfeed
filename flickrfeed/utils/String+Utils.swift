@@ -17,4 +17,11 @@ extension String {
         return isNilOrEmpty(string) == false
     }
     
+    static func nonEmpty(_ text: String?, emptyText: String = "") -> String {
+        guard String.hasContent(text) else {
+            return emptyText
+        }
+        return text ?? emptyText
+    }
+    
 }

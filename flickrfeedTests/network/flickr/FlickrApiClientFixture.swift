@@ -10,10 +10,18 @@ import UIKit
 
 class FlickrApiClientFixture {
     let client: FlickrApiClient = FlickrApiClientImpl()
+    fileprivate(set) var tags: [String] = []
+    
     fileprivate let apiPhotosFeedUrl = "https://api.flickr.com/services/feeds/photos_public.gne?format=json&nojsoncallback=1"
+    fileprivate let apiPhotosTagUrl = "https://api.flickr.com/services/feeds/photos_public.gne?format=json&nojsoncallback=1&tags=tagA,tagB,tagC"
     
     func setupSuccessRequest() {
         stubHttpSuccess(url: apiPhotosFeedUrl, jsonFile: "get_photos_public.json")
+    }
+    
+    func setupTagRequest() {
+        tags = ["tagA","tagB","tagC"]
+        stubHttpSuccess(url: apiPhotosTagUrl, jsonFile: "get_photos_public.json")
     }
     
     func setupPartialInvalidItemsRequest() {
