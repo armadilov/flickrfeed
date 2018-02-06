@@ -34,10 +34,10 @@ func ==(lhs: NetworkServiceError, rhs: NetworkServiceError) -> Bool {
         return true
     case (.serviceNotAvailable(let leftStatus), .serviceNotAvailable(let rightStatus)):
         return leftStatus == rightStatus
-    case (.invalidResponse(let leftError), .invalidResponse(let rightError)):
-        return leftError?.localizedDescription == rightError?.localizedDescription
-    case (.unknown(let leftError), .unknown(let rightError)):
-        return leftError?.localizedDescription == rightError?.localizedDescription
+    case (.invalidResponse, .invalidResponse):
+        return true
+    case (.unknown, .unknown):
+        return true
     default:
         return false
     }

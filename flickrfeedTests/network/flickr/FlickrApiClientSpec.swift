@@ -72,7 +72,11 @@ class FlickrApiClientTests: XCTestCase {
     }
     
     func test_returns_invalid_response_error_when_response_is_invalid_json() {
-        XCTFail("Pending")
+        fixture.setupInvalidJsonResponse()
+        
+        act() { result in
+            XCTAssertThrows(error: NetworkServiceError.invalidResponse(nil)) { try _ = result.getValue() }
+        }
     }
     
     fileprivate func act(completion: @escaping (Result<[Flickr.FeedItem], NetworkServiceError>) -> ()) {

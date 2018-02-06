@@ -23,4 +23,8 @@ class FlickrApiClientFixture {
     func setupServiceDown() {
         stubHttp(url: apiPhotosFeedUrl, responseText: "INTERNAL SERVER ERROR", httpStatus: 500)
     }
+    
+    func setupInvalidJsonResponse() {
+        stubHttp(url: apiPhotosFeedUrl, responseText: "Non JSON Response", httpStatus: 200)
+    }
 }
