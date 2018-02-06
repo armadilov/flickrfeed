@@ -35,6 +35,12 @@ public func stubHttpSuccess( url: String, jsonFile: String ) {
     }
 }
 
+public func stubHttp( url: String, responseText: String, httpStatus: Int32 ) {
+    stub(condition: isAbsoluteURLString(url)) { _ in
+        return fixtureText(responseText, status: httpStatus, headers: ["Content-Type":"text/plain"])
+    }
+}
+
 public func stubHttpInitAnyHostBadRequest( ) {
     stub(condition: anyHost()) { response in
         let url = response.url?.absoluteString ?? "<no-url>"

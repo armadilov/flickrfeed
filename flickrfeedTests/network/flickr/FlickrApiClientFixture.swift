@@ -10,12 +10,17 @@ import UIKit
 
 class FlickrApiClientFixture {
     let client: FlickrApiClient = FlickrApiClientImpl()
+    fileprivate let apiPhotosFeedUrl = "https://api.flickr.com/services/feeds/photos_public.gne?format=json&nojsoncallback=1"
     
     func setupSuccessRequest() {
-        stubHttpSuccess(url: "https://api.flickr.com/services/feeds/photos_public.gne?format=json&nojsoncallback=1", jsonFile: "get_photos_public.json")
+        stubHttpSuccess(url: apiPhotosFeedUrl, jsonFile: "get_photos_public.json")
     }
     
     func setupPartialInvalidItemsRequest() {
-        stubHttpSuccess(url: "https://api.flickr.com/services/feeds/photos_public.gne?format=json&nojsoncallback=1", jsonFile: "get_photos_public_with_invalid_items.json")
+        stubHttpSuccess(url: apiPhotosFeedUrl, jsonFile: "get_photos_public_with_invalid_items.json")
+    }
+    
+    func setupServiceDown() {
+        stubHttp(url: apiPhotosFeedUrl, responseText: "INTERNAL SERVER ERROR", httpStatus: 500)
     }
 }

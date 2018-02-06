@@ -64,7 +64,11 @@ class FlickrApiClientTests: XCTestCase {
     }
     
     func test_returns_service_error_when_service_down() {
-        XCTFail("Pending")
+        fixture.setupServiceDown()
+        
+        act() { result in
+            XCTAssertThrows(error: NetworkServiceError.serviceNotAvailable(500)) { try _ = result.getValue() }
+        }
     }
     
     func test_returns_invalid_response_error_when_response_is_invalid_json() {

@@ -22,7 +22,7 @@ class FlickrApiClientImpl: FlickrApiClient {
     func getPublicPhotos(completion: @escaping (Result<[Flickr.FeedItem], NetworkServiceError>) -> ()) {
         
         Alamofire.request(getPhotosPublicUrl).responseData { response in
-            guard let data = response.result.value else {
+            guard let httpStatus = response.response?.statusCode, httpStatus == 200, let data = response.result.value else {
                 completion(Result.failure(NetworkServiceError.from(httpResponse: response.response, error: response.error)))
                 return
             }
