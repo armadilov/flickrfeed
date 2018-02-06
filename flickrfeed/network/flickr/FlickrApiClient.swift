@@ -30,7 +30,10 @@ class FlickrApiClientImpl: FlickrApiClient {
             do {
                 let decoder = RestJSONDecoder()
                 let photoFeed = try decoder.decode(Flickr.PhotoFeed.self, from: data)
-                completion(Result.success(photoFeed.items))
+                
+                var items = photoFeed.items;
+                items.remove { String.isNilOrEmpty( $0.media?.link ) }
+                completion(Result.success(items))
             } catch {
                 print(error)
                 completion(Result.failure(NetworkServiceError.invalidResponse(error)))

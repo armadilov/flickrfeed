@@ -29,9 +29,10 @@ class FlickrApiClientTests: XCTestCase {
         
         act() { result in
             guard let items = try? result.getValue(), let firstItem = items.first else {
-                XCTAssert(false)
+                XCTAssert(false, result.debugDescription)
                 return
             }
+            
             XCTAssertNotEmpty(firstItem.title)
             XCTAssertNotEmpty(firstItem.link)
             XCTAssertNotEmpty(firstItem.media?.link)
@@ -40,8 +41,18 @@ class FlickrApiClientTests: XCTestCase {
         }
     }
     
-    func test_ignores_items_without_valid_fields_when_feed_requested() {
-        XCTFail("Pending")
+    func test_ignores_items_without_media_link_when_feed_requested() {
+        fixture.setupPartialInvalidItemsRequest()
+        
+        act() { result in
+            guard let items = try? result.getValue() else {
+                XCTAssert(false, result.debugDescription)
+                return
+            }
+            
+            XCTAssertEqual(items.count, 1)
+            XCTAssert(items.all { String.hasContent($0.media?.link) })
+        }
     }
     
     func test_returns_network_error_when_network_down() {

@@ -9,5 +9,5 @@
 import XCTest
 
 func XCTAssertNotEmpty(_ s: String?, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) {
-    XCTAssert((s?.count ?? 0) > 0, message, file: file, line: line)
+    XCTAssert(String.hasContent(s), message, file: file, line: line)
 }
