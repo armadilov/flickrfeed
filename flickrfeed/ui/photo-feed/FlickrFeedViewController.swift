@@ -24,6 +24,7 @@ class FlickrFeedViewController: UIViewController {
     @IBOutlet fileprivate weak var tableView: UITableView!
     @IBOutlet fileprivate weak var activityOverlayView: UIView!
     @IBOutlet fileprivate weak var activityIndicatorView: NVActivityIndicatorView!
+    @IBOutlet fileprivate weak var noItemsView: UIView!
     fileprivate var refreshControl: UIRefreshControl!
     
     override func viewDidLoad() {
@@ -112,6 +113,7 @@ extension FlickrFeedViewController : UITableViewDataSource {
 extension FlickrFeedViewController : FlickrFeedViewModelDelegate {
     func viewModelDidBeginRequest() {
         showActivity()
+        AnimateUtils.fadeOut(view: noItemsView)
     }
     
     func viewModelDidEndRequest() {
@@ -124,6 +126,10 @@ extension FlickrFeedViewController : FlickrFeedViewModelDelegate {
     
     func viewModelDidLoadItems() {
         self.tableView.reloadData()
+        
+        if (viewModel.items.count == 0) {
+            AnimateUtils.fadeIn(view: noItemsView)
+        }
     }
     
     
