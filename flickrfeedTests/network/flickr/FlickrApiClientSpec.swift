@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import Alamofire
 
 class FlickrApiClientTests: XCTestCase {
     
@@ -38,11 +39,14 @@ class FlickrApiClientTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
+        stubHttpInitAnyHostBadRequest()
+        
         fixture = FlickrApiClientFixture()
     }
     
     override func tearDown() {
         super.tearDown()
+        stubHttpTearDown()
     }
     
 }
