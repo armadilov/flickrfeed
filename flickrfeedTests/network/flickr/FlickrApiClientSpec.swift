@@ -11,7 +11,7 @@ import Alamofire
 
 class FlickrApiClientTests: XCTestCase {
     
-    func test_loads_items_when_requested() {
+    func test_loads_items_when_feed_requested() {
         fixture.setupSuccessRequest()
         
         act() { result in
@@ -22,6 +22,26 @@ class FlickrApiClientTests: XCTestCase {
 
             XCTAssert(items.count > 0)
         }
+    }
+    
+    func test_loads_required_item_fields_when_feed_requested() {
+        XCTFail("Pending")
+    }
+    
+    func test_ignores_items_without_valid_fields_when_feed_requested() {
+        XCTFail("Pending")
+    }
+    
+    func test_returns_network_error_when_network_down() {
+        XCTFail("Pending")
+    }
+    
+    func test_returns_service_error_when_service_down() {
+        XCTFail("Pending")
+    }
+    
+    func test_returns_invalid_response_error_when_response_is_invalid_json() {
+        XCTFail("Pending")
     }
     
     fileprivate func act(completion: @escaping (Result<[Flickr.FeedItem], NetworkServiceError>) -> ()) {
